@@ -137,8 +137,10 @@ When the recipient received the email (but keep in mind, this field can be spoof
 ---
 
 ### **Attachment Decoding 🚨**  
-- Using **CyberChef**, the attachment decoded into a **zip file** instead of a PDF.  
-- File signature check 🔑 revealed it was **not** a PDF but a ZIP archive.  
+- Using **CyberChef: https://github.com/gchq/CyberChef**, the attachment decoded into a **zip file** instead of a PDF.  
+- File signature check 🔑 revealed it was **not** a PDF but a ZIP archive.
+  
+![Screenshot 2025-01-22 120336](https://github.com/user-attachments/assets/31a2a2d6-840d-439b-aacd-055678ba4c81)
 
 ---
 
@@ -208,5 +210,101 @@ For example:
 - **Good Job Major**: Signature **25 50 44 46** → It’s a PDF file.  
 
 ---
+
+#### 📝 **File Signature Basics**  
+- The first couple of bytes in a file (e.g., `25 50 44 46`) determine its type.  
+- For instance:  
+  - `25 50 44 46` = PDF 📄  
+  - `FF D8 FF E0` = JPEG 🖼️  
+
+#### ⚙️ **CyberChef Tools**  
+1️⃣ Open CyberChef and remove unnecessary hex characters to decode files.  
+2️⃣ Save the file as **attachment.zip** and extract it.  
+
+#### 🛠️ **Analysis Steps**  
+- Always use a **virtual machine (VM)** for file analysis to avoid infecting your host. ⚠️  
+- Enable **hidden items** in file explorer to spot hidden files. 👀  
+
+---
+
+### 🗂️ **Decoding the Files**  
+
+#### **File: daughter's Crown**  
+1. Open the file in **HxD**.  
+2. First couple of bytes: `FF D8 FF E0` (JPEG).  
+3. Rename the file with a `.jpeg` extension.  
+4. Open to reveal an image! 🎉  
+
+#### **File: good job major**  
+1. First couple of bytes: `25 50 44 46` (PDF).  
+2. Rename to `.pdf`.  
+3. The file contains a message:  
+   - “Hey Candians are safe. The proof is in the file named *daughter's Crown*. Location to send 1 billion candies is in *money.xlsx*.”  
+
+#### **File: money.xlsx**  
+1. First couple of bytes: `50 4B 03 04` (ZIP or Office XML).  
+2. Confirmed as a valid **Excel file**.  
+
+---
+
+### 🔍 **Inspecting money.xlsx**  
+1. Open with **Square X File Viewer** (no Excel needed!).  
+2. The file reveals:  
+   - **Message:**  
+     “Whatever you’ve seen or read till now is fake. Our intention wasn’t for money. It’s the beginning of war with Candian. Find me on my Planet ASAP!”  
+   - Check **Sheet 3** for hidden content:  
+     - Right-click → **Clear Format** → Reveals Base64-encoded text.  
+   - Decode in CyberChef → Output: "The Martian Colony." 🪐  
+
+---
+
+📬 If you have the ability to search emails across your organization, the **subject field** can help you find others who may have received similar emails. Next, let's break down the key fields to analyze effectively:
+
+1️⃣ **From Field**  
+   - Who sent the email?  
+   - Example: Bill (bill@jobs-micro.com)  
+   🔍 *Always focus on the email address itself, not just the name. Names can be spoofed! Keep track of the email address to search for similar messages in your organization.*
+
+2️⃣ **Reply-To Field**  
+   - This is where replies will be sent if someone clicks "Reply."  
+   - 🤔 *A quick red flag is when the "From" and "Reply-To" addresses are different. Why would the sender want replies to go somewhere else? Always investigate this!*  
+
+3️⃣ **Content Type**  
+   - This tells the mail server how to render the content.  
+   - 📜 *If you see "boundary," it indicates multiple formats are included.*
+
+4️⃣ **Message ID**  
+   - An important identifier that tracks where the email originated and where it went.  
+   - 🛠️ *Helpful for searching emails across your organization!*
+
+5️⃣ **Date Field**  
+   - When was the email sent?  
+   - ⚠️ *Although dates can be spoofed, they’re a good starting point for your investigation.*
+
+---
+
+### 🧠 **Example Questions for Practice**  
+
+1️⃣ **What email service did the malicious actor use?**  
+   - 🕵️ Check the domain in the "From" field. Example: `mk.cz`
+
+2️⃣ **What is the Reply-To email address?**  
+   - 🌟 Remember: This is where replies are sent. Example: `replyto@maliciousdomain.com`
+
+3️⃣ **What file type was attached?**  
+   - 🚩 The **Content-Type** field may indicate one format (e.g., PDF), but further analysis could reveal another (e.g., ZIP).
+
+4️⃣ **Who is the malicious actor?**  
+   - 🛠️ Use tools like `ExifTool` to extract metadata from attachments.  
+   - Example: The author field in the metadata might reveal the name: *Pasto Nea*.
+
+5️⃣ **Where is the attacker located?**  
+   - 🌌 Sometimes clues like encoded data (e.g., Base64) can hint at the location.  
+   - Example: *Martian Colony*
+
+6️⃣ **What is the Command-and-Control (C2) domain?**  
+   - 🔗 Look for domains tied to the attacker. Example: `pure.com`
+
+
 
 🌟 **Pro Tip**: Always analyze files with care, follow secure practices, and dig into suspicious details to uncover the truth. 🕵️‍♂️🔐  
